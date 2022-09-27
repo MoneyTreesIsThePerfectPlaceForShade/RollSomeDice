@@ -57,7 +57,7 @@ holdBtn.addEventListener("click", function () {
         scores[activePlayer];
 
     // >100
-    if (scores[activePlayer] >= 10) {
+    if (scores[activePlayer] >= 100) {
         // finish the game
         document
             .querySelector(`.player--${activePlayer}`)
@@ -77,7 +77,28 @@ holdBtn.addEventListener("click", function () {
     }
 });
 
-// функционал кнопки RULES
+newGameBtn.addEventListener("click", function () {
+    scores[0] = 0;
+    scores[1] = 0;
+    score0Element.textContent = 0;
+    score1Element.textContent = 0;
+    activePlayer = 0;
+    currentScore = 0;
+    document.getElementById(`current--0`).textContent = 0;
+    document.getElementById(`current--1`).textContent = 0;
+
+    player0El.classList.remove("player--active");
+    player1El.classList.remove("player--active");
+
+    player0El.classList.add("player--active");
+
+    player0El.classList.remove("player--winner");
+    player1El.classList.remove("player--winner");
+
+    diceElement.classList.add("hidden");
+});
+
+// функционал кнопки RULES как модального окна
 const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".close-modal");
