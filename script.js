@@ -57,7 +57,7 @@ holdBtn.addEventListener("click", function () {
         scores[activePlayer];
 
     // >100
-    if (scores[activePlayer] >= 100) {
+    if (scores[activePlayer] >= 10) {
         // finish the game
         document
             .querySelector(`.player--${activePlayer}`)
@@ -72,6 +72,8 @@ holdBtn.addEventListener("click", function () {
         holdBtn.disabled = true;
         diceBtn.disabled = true;
         diceElement.classList.add("hidden");
+        document.querySelector("body").style.background =
+            "linear-gradient(to top right, #60c06e 0%, #304e90 100%)";
     } else {
         switchPlayer();
     }
@@ -96,6 +98,12 @@ newGameBtn.addEventListener("click", function () {
     player1El.classList.remove("player--winner");
 
     diceElement.classList.add("hidden");
+
+    holdBtn.disabled = false;
+    diceBtn.disabled = false;
+
+    document.querySelector("body").style.background =
+        "linear-gradient(to top right, #c06060 0%, #783090 100%)";
 });
 
 // функционал кнопки RULES как модального окна
