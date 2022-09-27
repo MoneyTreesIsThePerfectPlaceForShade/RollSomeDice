@@ -21,6 +21,16 @@ const scores = [0, 0];
 let currentScore = 0;
 let activePlayer = 0;
 
+const switchPlayer = () => {
+    // switch the next player
+    document.getElementById(`current--${activePlayer}`).textContent = 0;
+    currentScore = 0;
+    activePlayer = activePlayer === 0 ? 1 : 0;
+    // toggle - если есть класс - то удаляет его,если нет - добавляет
+    player0El.classList.toggle("player--active");
+    player1El.classList.toggle("player--active");
+};
+
 diceBtn.addEventListener("click", function () {
     // generate random dice number
     const dice = Math.trunc(Math.random() * 6) + 1;
@@ -36,12 +46,63 @@ diceBtn.addEventListener("click", function () {
         document.getElementById(`current--${activePlayer}`).textContent =
             currentScore;
     } else {
-        // switch the next player
-        document.getElementById(`current--${activePlayer}`).textContent = 0;
-        currentScore = 0;
-        activePlayer = activePlayer === 0 ? 1 : 0;
-        // toggle - если есть класс - то удаляет его,если нет - добавляет
-        player0El.classList.toggle("player--active");
-        player1El.classList.toggle("player--active");
+        switchPlayer();
+    }
+});
+
+holdBtn.addEventListener("click", function () {
+    // add current score to score of active player
+    scores[activePlayer] += currentScore;
+    document.getElementById(`score--${activePlayer}`).textContent =
+        scores[activePlayer];
+
+    // >100
+    if (scores[activePlayer] >= 10) {
+        // finish the game
+        document
+            .querySelector(`.player--${activePlayer}`)
+            .classList.add("player--winner");
+        document
+            .querySelector(`.player--${activePlayer}`)
+            .classList.remove("player--active");
+
+        document.getElementById(
+            `name--${activePlayer}`
+        ).textContent = `Player ${activePlayer + 1} WINS!`;
+        holdBtn.disabled = true;
+        diceBtn.disabled = true;
+        diceElement.classList.add("hidden");
+    } else {
+        switchPlayer();
+    }
+});
+
+// функционал кнопки RULES
+const modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+const btnCloseModal = document.querySelector(".close-modal");
+const btnsOpenModal = document.querySelectorAll(".btn--rules");
+
+const closeModalWindow = () => {
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+};
+
+const openModalWindow = () => {
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+};
+
+for (let i = 0; i < btnsOpenModal.length; i++) {
+    btnsOpenModal[i].addEventListener("click", openModalWindow);
+}
+
+btnCloseModal.addEventListener("click", closeModalWindow);
+
+overlay.addEventListener("click", closeModalWindow);
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        closeModalWindow();
     }
 });
